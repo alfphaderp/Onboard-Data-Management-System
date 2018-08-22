@@ -28,8 +28,7 @@ import processing.core.PApplet;
  * and is overall kinda wonky and I don't really like it. As such, this program uses jSerialComm. More information for jSerialComm
  * can be found at https://fazecast.github.io/jSerialComm/
  */
-
-public class Main extends PApplet {
+public class ODMS extends PApplet {
 	// Bound constants for speed that will be used by various parts of the program
 	// LOWER_BOUND and UPPER_BOUND should be set to the lowest and highest speed respectively
 	public static final float LOWER_BOUND = 0;
@@ -38,7 +37,7 @@ public class Main extends PApplet {
 	
 	// Size constant in samples for the deque of raw data received from the Arduino
 	// Each sample represents 0.25 seconds, so 2 samples represent 0.50 seconds, 5 samples represent 1.25 seconds, etc.
-	public static final int DEQUE_SIZE = 40;
+	public static final int DEQUE_SIZE = 80;
 	
 	// Size constant for how long a period of time should be accounted for each speed calculation
 	public static final int SAMPLE_SIZE = 2;
@@ -77,7 +76,7 @@ public class Main extends PApplet {
 	
 	// Main method, creates and runs the PApplet based on this class
 	public static void main(String[] args) {
-		PApplet.main("odms.Main");
+		PApplet.main("odms.ODMS");
 	}
 	
 	// Configure program settings before the start of the program
@@ -113,7 +112,7 @@ public class Main extends PApplet {
 		arduinoSerial.openPort();
 		
 		// Populate the data deque
-		// There probably is a much more elegant way of doing this
+		// There probably is a much more elegant way of doing this, but this is the only way I know
 		for(int i = 0; i < DEQUE_SIZE; i++)
 			data.add(0);
 		
@@ -198,26 +197,26 @@ public class Main extends PApplet {
 		beginShape();
 		vertex(0, height);
 		Iterator<Integer> it = data.iterator();
-		for(int i = 0; i < 40; i++) {
-			curveVertex(i / 39.0f * (width + 60) - 30, height - map(it.next(), 0, UPPER_BOUND / CONVERSION_CONSTANT, 0, height));
+		for(int i = 0; i < DEQUE_SIZE; i++) {
+			curveVertex(i / (DEQUE_SIZE - 1f) * (width + 60) - 30, height - map(it.next(), 0, UPPER_BOUND / CONVERSION_CONSTANT, 0, height));
 		}
 		vertex(width, height);
 		endShape();
 		
 		stroke(255);
 		strokeWeight(3);
-		for(int i = 0; i < 5; i++) {
-			line(i / 4.0f * width, height, i / 4.0f * width, height - 5);
-			line(0, i / 4.0f * height, 5, i / 4.0f * height);
+		for(int i = 0; i < 10; i++) {
+			line(i / 8.0f * width, height, i / 8.0f * width, height - 5);
+			line(0, i / 8.0f * height, 5, i / 8.0f * height);
 		}
 		
 		fill(255);
 		textSize(16);
 		text("t-0s", width - 20, height - 20);
-		text("t-5s", width / 2, height - 20);
-		text("0kts/t-10s", 50, height - 20);
-		text("9kts", 30, height / 2);
-		text("18kts", 30, 10);
+		text("t-" + DEQUE_SIZE / 8 + "s", width / 2, height - 20);
+		text(LOWER_BOUND + "kts/t-" + DEQUE_SIZE / 4 + "s", 60, height - 20);
+		text(MIDDLE_BOUND + "kts", 40, height / 2);
+		text(UPPER_BOUND + "kts", 40, 10);
 		
 		// Display knots and timer
 		textSize(128);
