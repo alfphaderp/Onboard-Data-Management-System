@@ -1,14 +1,18 @@
 # Onboard-Data-Management-System
 A mini project created during my internship at UCLA to intercept, analyze, and log digital speed data signals from a boat paddlewheel sensor.
 
+<p align="center">
+  <img src="./img/display.png" alt="display">
+</p>
+
 ## Getting Started
-These instructions will help you get a copy of the project up and running
+These instructions will help you get a copy of the project up and running.
 
 ### Prerequisites
 You'll need the following before getting started:
 <ul>
   <li>An Arduino board</li>
-  <li>Java</li>
+  <li>Java Development Kit</li>
 </ul>
 
 ### Installation
@@ -25,6 +29,5 @@ After your Arduino is fully set up, simply plug it in, compile and run ODMS to g
   <li>Ryan Zhu</li>
 </ul>
 
-<p align="center">
-  <img src="./img/display.png" alt="display">
-</p>
+## Support
+If you have any questions, feel free to email me at <a href="mailto:ryanzhu2018@gmail.com">ryanzhu2018@gmail.com</a>
